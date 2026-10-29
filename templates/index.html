@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reportes Universitarios</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        header {
+            background: #123b64;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #00000015;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 18px;
+            background: #1769aa;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0f4c81;
+        }
+
+        .reporte {
+            border-left: 5px solid #1769aa;
+            background: #f8fafc;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+        }
+
+        .estado {
+            color: #b45309;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Reportes Universitarios</h1>
+        <p>Sistema de reportes de problemas universitarios</p>
+    </header>
+
+    <main>
+
+        <!-- FORMULARIO -->
+        <section class="tarjeta">
+
+            <h2>Registrar un problema</h2>
+
+            <p>
+                Completa los siguientes datos para registrar un reporte.
+            </p>
+
+            <form action="/registrar" method="post">
+
+                <label for="estudiante">
+                    Nombre del estudiante
+                </label>
+
+                <input
+                    type="text"
+                    id="estudiante"
+                    name="estudiante"
+                    required
+                >
+
+                <label for="categoria">
+                    Tipo de problema
+                </label>
+
+                <select
+                    id="categoria"
+                    name="categoria"
+                    required
+                >
+                    <option value="">
+                        Selecciona una opción
+                    </option>
+
+                    <option value="Infraestructura">
+                        Infraestructura
+                    </option>
+
+                    <option value="Equipos">
+                        Equipos
+                    </option>
+
+                    <option value="Internet">
+                        Internet
+                    </option>
+
+                    <option value="Otros servicios">
+                        Otros servicios
+                    </option>
+                </select>
+
+                <label for="descripcion">
+                    Descripción del problema
+                </label>
+
+                <textarea
+                    id="descripcion"
+                    name="descripcion"
+                    rows="4"
+                    required
+                ></textarea>
+
+                <button type="submit">
+                    Registrar reporte
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- REPORTES REGISTRADOS -->
+        <section class="tarjeta">
+
+            <h2>Reportes registrados</h2>
+
+            {% if reportes %}
+
+                {% for reporte in reportes %}
+
+                    <div class="reporte">
+
+                        <p>
+                            <strong>Reporte #{{ reporte.id }}</strong>
+                        </p>
+
+                        <p>
+                            <strong>Estudiante:</strong>
+                            {{ reporte.estudiante }}
+                        </p>
+
+                        <p>
+                            <strong>Categoría:</strong>
+                            {{ reporte.categoria }}
+                        </p>
+
+                        <p>
+                            <strong>Problema:</strong>
+                            {{ reporte.problema }}
+                        </p>
+
+                        <p class="estado">
+                            Estado: {{ reporte.estado }}
+                        </p>
+
+                    </div> class="acciones">
+
+    <form action="/atender/{{ reporte.id }}" method="POST" style="display:inline;">
+        <button type="submit">Atender reporte</button>
+    </form>
+
+    <form action="/eliminar/{{ reporte.id }}" method="POST" style="display:inline;">
+        <button type="submit">Eliminar reporte</button>
+    </form>
+
+</div>
+
+</div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>
+                    Todavía no hay reportes registrados.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+</html>

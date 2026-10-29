@@ -1,0 +1,262 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes Universitarios</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #7d9dbedb;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        header {
+            background: #123b64;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #00000015;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 18px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-registrar {
+            background: #1769aa;
+        }
+
+        .btn-atender {
+            background: #16a34a;
+        }
+
+        .btn-eliminar {
+            background: #dc2626;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .reporte {
+            background: #f8fafc;
+            padding: 18px;
+            margin-top: 15px;
+            border-left: 5px solid #1769aa;
+            border-radius: 6px;
+        }
+
+        .estado {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Reportes Universitarios</h1>
+        <p>Sistema de reportes de problemas universitarios</p>
+    </header>
+
+    <main>
+
+        <!-- FORMULARIO PARA REGISTRAR -->
+        <section class="tarjeta">
+
+            <h2>Registrar un problema</h2>
+
+            <p>
+                Completa los siguientes datos para registrar un reporte.
+            </p>
+
+            <form action="/registrar" method="post">
+
+                <label for="estudiante">
+                    Nombre del estudiante
+                </label>
+
+                <input
+                    type="text"
+                    id="estudiante"
+                    name="estudiante"
+                    required
+                >
+
+                <label for="categoria">
+                    Tipo de problema
+                </label>
+
+                <select
+                    id="categoria"
+                    name="categoria"
+                    required
+                >
+                    <option value="">
+                        Selecciona una opción
+                    </option>
+
+                    <option value="Infraestructura">
+                        Infraestructura
+                    </option>
+
+                    <option value="Equipos">
+                        Equipos
+                    </option>
+
+                    <option value="Internet">
+                        Internet
+                    </option>
+
+                    <option value="Otros servicios">
+                        Otros servicios
+                    </option>
+                </select>
+
+                <label for="descripcion">
+                    Descripción del problema
+                </label>
+
+                <textarea
+                    id="descripcion"
+                    name="descripcion"
+                    rows="4"
+                    required
+                ></textarea>
+
+                <button type="submit" class="btn-registrar">
+                    Registrar reporte
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- REPORTES REGISTRADOS -->
+        <section class="tarjeta">
+
+            <h2>Reportes registrados</h2>
+
+            {% if reportes %}
+
+                {% for reporte in reportes %}
+
+                    <div class="reporte">
+
+                        <p>
+                            <strong>Reporte #{{ reporte.id }}</strong>
+                        </p>
+
+                        <p>
+                            <strong>Estudiante:</strong>
+                            {{ reporte.estudiante }}
+                        </p>
+
+                        <p>
+                            <strong>Categoría:</strong>
+                            {{ reporte.categoria }}
+                        </p>
+
+                        <p>
+                            <strong>Problema:</strong>
+                            {{ reporte.problema }}
+                        </p>
+
+                        <p class="estado">
+                            <strong>Estado:</strong>
+                            {{ reporte.estado }}
+                        </p>
+
+
+                        <!-- BOTÓN ATENDER -->
+                        {% if reporte.estado == "Pendiente" %}
+
+                            <form
+                                action="/atender/{{ reporte.id }}"
+                                method="post"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="btn-atender"
+                                >
+                                    Atender reporte
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+
+                        <!-- BOTÓN ELIMINAR -->
+                        <form
+                            action="/eliminar/{{ reporte.id }}"
+                            method="post"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn-eliminar"
+                            >
+                                Eliminar reporte
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>
+                    Todavía no hay reportes registrados.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+</html>
+```
